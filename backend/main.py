@@ -6,7 +6,7 @@ Base.metadata.create_all(bind=engine)
 
 app=FastAPI(title="SAGE", description="small reference to THE BOYS (sister sage)")
 
-app.add_midleware(
+app.add_middleware(
     CORSMiddleware,
     allow_origins =["*"],
     allow_methods =["*"],
