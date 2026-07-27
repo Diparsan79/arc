@@ -36,7 +36,7 @@ def delete_subject(db: Session, subject_id: int):
 # Sessions
 
 def get_sessions(db: Session, limit: int = 50):
-    return db.query(models.session).order_by(
+    return db.query(models.Sessionession).order_by(
         models.Session.created_ad.desc()
     ).limit(limit).all()
 
