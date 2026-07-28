@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAGE - Log Session</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    
+    <nav>
+        <span class="nav-logo">SAGE</span>
+        <div class="nav-links">
+            <a href="/index.html">dashboard</a>
+            <a href="/log.html" class="active">log</a>
+            <a href="/subjects.html">subjects</a>
+        </div>
+    </nav>
+
+    <main>
+        <div class="page-header">
+            <h1> log a session</h1>
+            <p class="subtitle">what did you study today?</p>
+        </div>
+
+        <div class="card">
+            <div class="form-group">
+                <label for="subject">subject</label>
+                <select id="subject">
+                    <option value="">loading subjects...></option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="duration"> duration (minutes)</label>
+                    <input
+                        type="number"
+                        id="duration"
+                        placeholder="45"
+                        min="1"
+                        max="480"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="focus">focus rating</label>
+                    <div class="focus-selector" id="focusSelector">
+                        <button class="focus-btn" data-value="1">1</button>
+                        <button class="focus-btn" data-value="2">2</button>
+                        <button class="focus-btn" data-value="3">3</button>
+                        <button class="focus-btn" data-value="4">4</button>
+                        <button class="focus-btn" data-value="5">5</button>
+                    </div>
+                    <input type="hidden" id="focusRating" value="">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="notes">what did you cover?</label>
+                <textarea
+                    id="notes"
+                    placeholder="Unit 1 Rotational Dynamics"
+                    rows="3"
+                ></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="location">where?</label>
+                    <select id="location">
+                        <option value="home">home</option>
+                        <option value="library">library</option>
+                        <option value="school">school</option>
+                        <option value="outside">outside</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="distractions">any distractions?</label>
+                    <input
+                        type="text"
+                        id="distractions"
+                        placeholder="youtube, phone..."
+                    >
+                </div>
+            </div>
+
+            <button class="btn-primary" id="saveBtn">save session</button>
+
+            <div id="status" class="status hidden"></div>
+        </div>
+    </main>
+    <script src="/static/app.js"></script>
+</body>
+</html>

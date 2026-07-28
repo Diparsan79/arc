@@ -1,0 +1,237 @@
+/*variables*/
+:root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --border: #2a2a2a;
+    --red: #cc0000;
+    --red-dim: #661111;
+    --white: #f0f0f0;
+    --dim: #666666;
+    --success: #1dd1a1;
+    --warning: #ff9f43;
+
+    --font-mono: 'Courier New', Courier, monospace;
+    --font-body: 'Georgia', serif;
+
+    --radius:  4px;
+    --gap: 1.5rem;
+}
+
+/* reset */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* base */
+body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 16px;
+    min-height: 100vh;
+}
+/* nav */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 100;
+}
+
+.nav-logo {
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--red);
+    letter-spacing: 0.2em;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-links a {
+    color: var(--dim);
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--white);
+}
+
+/* main */
+main {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+}
+
+/* page header */
+.page-header h1 {
+    font-family: var(--font-mono);
+    font-size: 1.8rem;
+    color: var(--white);
+    font-weight: normal;
+}
+
+.subtitle {
+    color: var(--dim);
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+}
+
+/* card */
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+}
+
+/* form */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--gap);
+}
+
+label {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--dim);
+    letter-spacing: 0.05em;
+}
+
+
+input,
+select,
+textarea {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    padding: 0.6rem 0.8rem;
+    width: 100%;
+    transition: border-color 0.2s;
+    outline: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--red);
+}
+
+textarea {
+    resize: vertical;
+}
+
+
+/* focus selector */
+.focus-selector {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.focus-btn {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--dim);
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.focus-btn:hover {
+    border-color: var(--red);
+    color: var(--white);
+}
+
+.focus-btn.selected {
+    background: var(--red);
+    border-color: var(--red);
+    color: var(--white);
+}
+
+/* button */
+.btn-primary {
+    background: var(--red);
+    border: none;
+    border-radius: var(--radius);
+    color: var(--white);
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    padding: 0.75rem 1.5rem;
+    transition: background 0.2s;
+    align-self: flex-start;
+}
+
+.btn-primary {
+    background:    var(--red);
+    border:        none;
+    border-radius: var(--radius);
+    color:         var(--white);
+    cursor:        pointer;
+    font-family:   var(--font-mono);
+    font-size:     0.9rem;
+    letter-spacing: 0.05em;
+    padding:       0.75rem 1.5rem;
+    transition:    background 0.2s;
+    align-self:    flex-start;
+}
+
+.btn-primary:hover {
+    background: var(--red-dim);
+}
+
+.btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* status */
+.status {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius);
+    border-left: 3px solid;
+}
+
+.status.success {
+    color: var(--success);
+    border-color: var(--success);
+    background: rgba(204, 0,0, 0.05);
+}
+
+.hidden { display: none; }
