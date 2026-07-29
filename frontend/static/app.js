@@ -83,6 +83,9 @@ async function saveSession() {
     try {
         const res = await fetch(`${API}/sessions`, {
             method: "POST",
+            headers: {
+                "Content-type": "application/json"
+            },
             body: JSON.stringify({
                 subject_id: parseInt(subject_id),
                 duration: parseInt(duration),
