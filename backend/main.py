@@ -71,3 +71,5 @@ def week_stats(db: Session = Depends(get_db)):
 @app.get("/stats/subjects")
 def subject_stats(db: Session = Depends(get_db)):
     return crud.get_subject_stats(db)
+
+app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
