@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARC — Timer</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+    <nav>
+        <span class="nav-logo">ARC</span>
+        <div class="nav-links">
+            <a href="/index.html">dashboard</a>
+            <a href="/timer.html" class="active">timer</a>
+            <a href="/log.html">manual log</a>
+            <a href="/subjects.html">subjects</a>
+        </div>
+    </nav>
+
+    <main>
+
+        <!-- subject selection-->
+        <div id="setupPhase">
+            <div class="page-header">
+                <h1>what are you studying?</h1>
+                <p class="subtitle">pick a subject to start the timer</p>
+            </div>
+
+            <div class="card">
+                <div class="form-group">
+                    <label for="timerSubject">subject</label>
+                    <select id="timerSubject">
+                        <option value="">loading...</option>
+                    </select>
+                </div>
+                <button class="btn-primary" id="startBtn">start session</button>
+            </div>
+        </div>
+
+        <!-- Timer -->
+        <div id="timerPhase" class="hidden">
+            <div class="timer-container">
+                <div class="timer-subject" id="timerSubjectName"></div>
+                <div class="timer-display" id="timerDisplay">00:00:00</div>
+                <div class="timer-controls">
+                    <button class="btn-secondary" id="pauseBtn">pause</button>
+                    <button class="btn-danger" id="stopBtn">stop</button>
+                </div>
+                <div class="timer-status" id="timerStatus">studying...</div>
+            </div>
+        </div>
+
+        <!-- Session Form  -->
+        <div id="logPhase" class="hidden">
+            <div class="page-header">
+                <h1>session complete</h1>
+                <p class="subtitle" id="sessionSummary"></p>
+            </div>
+
+            <div class="card">
+                <div class="form-group">
+                    <label>duration</label>
+                    <input 
+                        type="number" 
+                        id="logDuration" 
+                        min="1"
+                    >
+                    <span class="field-hint">minutes — auto-filled from timer</span>
+                </div>
+
+                <div class="form-group">
+                    <label>how was your focus?</label>
+                    <div class="focus-selector" id="logFocusSelector">
+                        <button class="focus-btn" data-value="1">1</button>
+                        <button class="focus-btn" data-value="2">2</button>
+                        <button class="focus-btn" data-value="3">3</button>
+                        <button class="focus-btn" data-value="4">4</button>
+                        <button class="focus-btn" data-value="5">5</button>
+                    </div>
+                    <input type="hidden" id="logFocusRating" value="">
+                </div>
+
+                <div class="form-group">
+                    <label>what did you cover?</label>
+                    <textarea 
+                        id="logNotes" 
+                        placeholder="Chapter 5 — thermodynamics, practice problems..."
+                        rows="3"
+                    ></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>where?</label>
+                        <select id="logLocation">
+                            <option value="home">home</option>
+                            <option value="library">library</option>
+                            <option value="school">school</option>
+                            <option value="outside">outside</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>distractions?</label>
+                        <input 
+                            type="text" 
+                            id="logDistractions"
+                            placeholder="youtube, phone..."
+                        >
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn-primary" id="saveSessionBtn">save session</button>
+                    <button class="btn-ghost" id="discardBtn">discard</button>
+                </div>
+
+                <div id="logStatus" class="status hidden"></div>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="/static/timer.js"></script>
+</body>
+</html>
