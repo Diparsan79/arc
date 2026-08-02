@@ -110,6 +110,30 @@ function stopTimer() {
     initFocusBtns()
 }
 
+function checkCrash() {
+    let saved = localStorage.getItem("arc_timer")
+    if (!saved) return
+
+    let d = JSON.parse(saved)
+    let lost = Date.now() - d.stime
+    let mins = toMins(lost)
+
+    let ok =  confirm("unfinished session found!\n" + d.sname + " . ~" + mins + "mins\nlog it?")
+
+    if (ok) {
+        sid = d.sid
+        sname= d.sname
+        elapsed = lost
+        localStorage.removeItem("arc_timer")
+        document.getElementById("logDuration").value = mins
+        document.getElementById("sessionSummary").textContent = d.sname + " . recovered"
+        showPhase("logPhase")
+        initFocusBtns()
+    } else {
+         localStorage.removeItem("arc_timer")
+    }
+}
+
 function initFocusBtns() {
     let btns = document.querySelectorAll("#logFocusSelector .focus-btn")
     btns.forEach(function(btn) {
@@ -170,6 +194,7 @@ function discard() {
 }
 
 document.addEventListener("DOMContentLoaded", function(){
+    checkCrash()
     loadSubjects()
     document.getElementById("startBtn").addEventListener("click", startTimer)
     document.getElementById("pauseBtn").addEventListener("click", pauseTimer)
