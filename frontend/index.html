@@ -8,6 +8,54 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    
+    <nav>
+        <span class="nav-logo">ARC</span>
+        <div class="nav-links">
+            <a href="/index.html" class="active">dashboard</a>
+            <a href="/timer.html">timer</a>
+            <a href="/log.html">manual log(for now)</a>
+            <a href="/subjects.html">subjects</a>
+        </div>
+    </nav>
+
+    <main>
+<!-- Today -->
+        <div class="section">
+            <div class="section-label">today</div>
+
+            <div class="card">
+                <div class="today-time" id="todayTime">0h 0m</div>
+
+                <div class="progress-bar-wrap">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <span class="progress-label" id="progressLabel">of 3h goal</span>
+                </div>
+
+                <div class="today-meta" id="todayMeta">
+                    no sessions yet today
+                </div>
+            </div>
+        </div>
+
+    <!-- 7-days -->
+        <div class="section">
+            <div class="section-label">this week</div>
+            <div class="card">
+                <canvas id="weekChart" height="120"></canvas>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-label">recent sessions</div>
+            <div id="recentSessions">
+                <div class="empty-state">no sessions logged yet</div>
+            </div>
+        </div>
+
+    </main>
+
+    <script arc="/static/dashboard.js"></script>
 </body>
 </html>

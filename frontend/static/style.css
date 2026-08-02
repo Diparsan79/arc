@@ -340,3 +340,124 @@ textarea {
     font-size: 0.75rem;
     color: var(--dim);
 }
+
+/* section */
+
+.section {
+    margin-bottom: 2.5rem;
+}
+
+.section-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--red);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+}
+
+/* today card */
+
+.today-time {
+    font-family: var(--font-mono);
+    font-size: 2.5rem;
+    color: var(--white);
+    margin-bottom: 1rem;
+}
+
+.progress-bar-wrap {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--red);
+    border-radius: 3px;
+    transition: width 0.6s ease;
+    width: 0%;
+}
+
+.progress-fill.done {
+    background: var(--success);
+}
+
+.progress-label {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--dim);
+    white-space: nowrap;
+}
+
+.today-meta {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--dim);
+}
+
+/* recent sessions */
+.session-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+}
+
+.session-row:last-child {
+    border-bottom: none;
+}
+
+.session-row:hover {
+    background: var(--surface);
+}
+
+.session-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.session-info {
+    flex: 1;
+}
+
+.session-subject {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--white);
+}
+
+.session-meta {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--dim);
+    margin-top: 0.2rem;
+}
+
+.session-focus {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--dim);
+}
+
+/* empty state */
+.empty-state {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--dim);
+    padding: 2rem 0;
+    text-align: center;
+}
