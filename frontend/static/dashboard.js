@@ -95,7 +95,35 @@ async function loadRecent() {
         container.innerHTML = ""
 
         let recent = sessions.slice(0,5)
+
+        for (let i = 0; i < recent.length; i++) {
+            let s = recent[i]
+            let hrs = Math.floor(s.duration / 60)
+            let mins = s.duration % 60
+            let dur = hrs > 0 ? hrs + "h " + mins + "m" : mins + "m"
+
+            let d = new Date(s.created_at)
+            let DateStr = d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric"})
+
+            let row = document.createElement("div")
+            row.className = "session-row"
+            row.innerHTML =
+                '<div class="session-dot" style="background:' + (s.subject.color || "#cc0000") + '"></div>' + 
+                '<div class="session-info">' +
+                    'div class="session-subject">' + s.subject.name + '</div>' + 
+                    'div class="session-meta">' + dateStr + ' . ' + dur + '</div>' +
+                'div' +
+                'div class="session-focus">focus ' + s.focus_rating + '/5</div>'
+            container.appendChild(row)
+        }
+
     } catch(e) {
         console.log("recent sessions failed", e)
     }
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+    loadToday()
+    loadWeekChart()
+    loadRecent()
+})
