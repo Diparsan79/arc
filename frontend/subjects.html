@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARC - Subjects</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <nav>
+        <span class="nav-logo">ARC</span>
+        <div class="nav-links">
+            <a href="/index.html">dashboard</a>
+            <a href="/timer.html">timer</a>
+            <a href="/log.html">manual log</a>
+            <a href="/subjects.html" clas="active">subjects</a>
+        </div>
+    </nav>
+
+    <main>
+        <div class="section">
+            <div class="section-label">time breakdown</div>
+            <div class="card">
+                <canvas id="subjectChart" height="160"></canvas>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-label">your subjects</div>
+            <div id="subjectList"></div>
+        </div>
+
+        <div class="section">
+            <div class="section-label">add subject</div>
+            <div class="card">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>name</label>
+                        <input type="text" id="newSubjectName" placeholder="e.g. Physics">
+                    </div>
+                    <div class="form-group">
+                        <label>color</label>
+                        <input type="color" id="newSubjectColor" value="#cc0000">
+                    </div>
+                </div>
+
+                <button class="btn-primary" id="addSubjectBtn">add subject</button>
+                <div id="addStatus" class="status hidden"></div>
+            </div>
+        </div>
+    </main>
+    
+    <script src="/static/subjects.js"></script>
+</body>
+</html>
