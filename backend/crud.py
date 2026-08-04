@@ -126,3 +126,27 @@ def get_subject_stats(db: Session):
 
     # sort most studied and so on
     return sorted(result, key=lambda x:x["total_minutes"], reverse=True)
+
+def get_subject_stats(db: Session):
+    subjects =  get_subjects(db)
+    result = []
+
+    for s in subjects:
+        sessions = db.query(models.Session).filter(
+            models.Session.subject_id == s.id
+        ).all()
+
+
+        total_mins = sum(x.duration for x in sessions)
+        count = len(sessions)
+        avg_focus = round(sum(x.focus_rating for x in sessions) / count, 1) if count > 0 else 0
+
+        result.append({
+            "id": s.id,
+            "subject": s.name,
+            "color": s.color,
+            "total_minutes": total_mins,
+            "sessions" : count,
+            "avg_focus": avg_focus
+        })
+    return sorted(result, key=lambda x: x["total_minutes"], reverse=True)
