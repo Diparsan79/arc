@@ -52,3 +52,92 @@ function renderCards(data) {
         container.appendChild(div)
     }
 }
+function renderChart(data) {
+    let labels = data.map(function(s) { return s.subject })
+    let values = data.map(function(s) { return s.total_minutes})
+    let colors = data.map(function(s) { return s.color})
+
+    let ctx = document.getElementById("subjectChart").getContext("2d")
+
+    new CharacterData(ctx, {
+        type: "bar",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "hours studied",
+                data: values,
+                backgroundColor: colors.map(function(c) { return c + "99"}),
+                borderColor: colors,
+                borderWidth: 1,
+                borderRadius: 3,
+            }]
+        },
+        options: {
+            plugins: { legend: { display: false }},
+            scales: {
+                x: {
+                    ticks: { color: "#666", font: { family: "Courier New", size: 11 }},
+                    grid: { display: false}
+                },
+                y: {
+                    ticks: {
+                        color: "#666",
+                        font: { family: "Courier New", size: 11 },
+                        callback: function(v) { return v + "h"}
+                    },
+                    grid: { color: "#1a1a1a"},
+                    beginAtZero: true,
+                }
+            }
+        }
+    })
+}
+
+async function deleteSubject(id) {
+    if (!confirm("delete this subject? sessions will also be deleted.")) return
+    
+    try {
+        let res = await fetch(API + "/subjects/" + id, {method: "DELETE"})
+        if (res.ok) {
+            loadSubjects()
+        } else {
+            alert("couldn't delete subject")
+        }
+    } catch(e) {
+        console.log("delete failed", e)
+    }
+}
+
+async function addSubject() {
+    let name = document.getElementById("newSubjectName").value.trim()
+    let color = document.getElementById("newSubjectColor").value
+
+    if (!name) {
+        setStatus("addStatus", "enter a subject name", "error")
+        return
+    }
+
+    try {
+        let res = await fetch(API + "/subjects", {
+            method: "POST",
+            headers: { "Content-Type": "application/json"},
+            body: JSON.stringify({name: name, color: color })
+        })
+
+        if (res.ok) {
+            document.getElementById("newSubjectName").value = ""
+            setStatus("addStatus", name + " added!", "success")
+            loadSubjects()
+        } else {
+            let data = await res.json()
+            setStatus("addStatus", "error: " + data.detail, "error")
+        }
+    } catch(e) {
+        setStatus("addStatus", "network error", "error")
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    loadSubjects()
+    document.getElementById("addSubjectBtn").addEventListener("click", addSubject)
+})
