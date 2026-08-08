@@ -54,7 +54,7 @@ function renderCards(data) {
 }
 function renderChart(data) {
     let labels = data.map(function(s) { return s.subject })
-    let values = data.map(function(s) { return s.total_minutes})
+    let values = data.map(function(s) { return +(s.total_minutes / 60).toFixed(1)})
     let colors = data.map(function(s) { return s.color})
 
     let ctx = document.getElementById("subjectChart").getContext("2d")

@@ -524,3 +524,90 @@ input[type="color"] {
     height: 42px;
     cursor: pointer;
 }
+
+.stats-bar {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.stat-pill {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+    min-width: 120px;
+}
+
+.stat-val {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    color: var(--white);
+}
+
+.stat-lbl {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--dim);
+    letter-spacing: 0.05em;
+}
+
+.history-row {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.history-row:last-child {
+    border-bottom: none;
+}
+
+.history-left {
+    flex: 1;
+}
+.history-subject {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--white);
+    margin-bottom: 0.3rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.history-detail {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--dim);
+    line-height: 1.8;
+}
+
+.history-notes {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    color: #999;
+    margin-top: 0.4rem;
+    font-style: italic;
+}
+
+.focus-dots {
+    display: flex;
+    gap: 3px;
+}
+
+.focus-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--border);
+}
+
+.focus-dot.filled {
+    background: var(--red);
+}

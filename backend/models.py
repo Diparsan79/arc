@@ -11,13 +11,13 @@ class Subject(Base):
     color = Column(String, default="#CC0000")
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
-    sessions = relationship("Session", back_populates="subject")
+    sessions = relationship("Session", back_populates="subject", cascade="all, delete-orphan")
 
 class Session(Base):
     __tablename__ = "sessions"
 
     id = Column(Integer, primary_key=True, index=True)
-    subject_id = Column(Integer, ForeignKey("subjects.id"), nullable=False)
+    subject_id = Column(Integer, ForeignKey("subjects.id", ondelete="CASCADE"), nullable=False)
     duration = Column(Integer, nullable=False)
     focus_rating = Column(Integer, nullable=False)
     notes = Column(Text, default="")

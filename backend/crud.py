@@ -35,10 +35,26 @@ def delete_subject(db: Session, subject_id: int):
 
 # Sessions
 
-def get_sessions(db: Session, limit: int = 50):
-    return db.query(models.Sessionession).order_by(
-        models.Session.created_ad.desc()
-    ).limit(limit).all()
+def get_sessions(db: Session, limit=100, subject_id=None, date_from=None, date_to=None):
+    q = db.query(models.Session).order_by(models.Session.created_at.desc())
+
+    if subject_id:
+        q = q.filter(models.Session.subject_id == subject_id)
+
+    if date_from:
+        try:
+            df = datetime.strptime(date_from, "%Y-%m-%d")
+            q = q.filter(models.Session.created_at >= df)
+        except:
+            pass
+    if date_to:
+        try:
+            dt = datetime.strptime(date_to, "%Y-%m-%d")
+            q = q.filter(models.Session.created_at >= df)
+        except:
+            pass
+
+    return q.limit(limit).all()
 
 def get_session(db: Session, session_id: int):
     return db.query(models.Session).filter(

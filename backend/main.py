@@ -2,6 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
+from typing import Optional
 
 from .database import engine, Base, get_db
 from . import crud, schemas, models
@@ -42,8 +43,13 @@ def delete_subject(subject_id: int, db: Session = Depends(get_db)):
 #sessions
 
 @app.get("/sessions", response_model=list[schemas.SessionResponse])
-def list_sessions(db: Session = Depends(get_db)):
-    return crud.get_sessions(db)
+def list_sessions(
+    subject_id: Optional[int] = None,
+    date_from: Optional[str] = None,
+    date_to: Optional[str] = None,
+    db: Session = Depends(get_db)
+):
+    return crud.get_sessions(db, subject_id=subject_id, date_from=date_from, date_to=date_to)
 
 @app.post("/sessions", response_model=schemas.SessionResponse)
 def create_session(session: schemas.SessionCreate, db: Session = Depends(get_db)):

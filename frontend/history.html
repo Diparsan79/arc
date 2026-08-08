@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARC - History</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <nav>
+        <span class="nav-logo">ARC</span>
+        <div class="nav-links">
+            <a href="/index.html">dashboard</a>
+            <a href="/timer.html">timer</a>
+            <a href="/log.html">manual log</a>
+            <a href="/subjects.html">subjects</a>
+            <a href="/history.html" class="active">history</a>
+        </div>
+    </nav>
+    
+    <main>
+        <div class="section">
+            <div class="stats-bar" id="statsBar">
+                <div class="stat-pill">
+                    <span class="stat-val" id="totalSessions">—</span>
+                    <span class="stat-lbl">sessions</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-val" id="totalHours">—</span>
+                    <span class="stat-lbl">total hours</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-val" id="avgFocus">—</span>
+                    <span class="stat-lbl">avg focus</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-val" id="avgDuration">—</span>
+                    <span class="stat-lbl">avg session</span>
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="section-label">filter</div>
+            <div class="card">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>subject</label>
+                        <select id="filterSubject">
+                            <option value="">all subjects</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>from</label>
+                        <input type="date" id="filterFrom">
+                    </div>
+                    <div class="form-group">
+                        <label>to</label>
+                        <input type="date" id="filterTo">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="btn-primary" id="applyFilter">apply</button>
+                    <button class="btn-ghost" id="clearFilter">clear</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-label">sessions</div>
+            <div id="sessionList">
+                <div class="empty-state">loading...</div>
+            </div>
+        </div>
+    </main>
+    <script sr="/static/history.js"></script>
+</body>
+</html>
