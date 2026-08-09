@@ -78,4 +78,12 @@ def week_stats(db: Session = Depends(get_db)):
 def subject_stats(db: Session = Depends(get_db)):
     return crud.get_subject_stats(db)
 
+@app.get("/stats/insights")
+def insights(db: Session = Depends(get_db)):
+    data = crud.get_insights(db)
+    if not data:
+        return {"empty": True}
+    return data
+
+
 app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
