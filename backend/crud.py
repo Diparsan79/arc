@@ -166,3 +166,21 @@ def get_subject_stats(db: Session):
             "avg_focus": avg_focus
         })
     return sorted(result, key=lambda x: x["total_minutes"], reverse=True)
+
+def get_insights(db: Session):
+    from collections import Counter
+
+    sessions = db.query(models.Session).order_by(
+        models.Session.created_at.asc()
+    ).all()
+
+    if not sessions:
+        return None
+
+    time_buckets = {
+        "morning": {"sessions": [], "label": "6am - 12pm"},
+        "afternoon": {"sessions": [], "label": "12pm - 6pm"},
+        "evening": {"sessions": [], "label": "6pm - 10pm"},
+        "night": {"sessions": [], "label": "10pm - 2am"},
+    }
+
