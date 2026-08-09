@@ -173,9 +173,7 @@ function clearFilters() {
 
 document.addEventListener("DOMContentLoaded", function() {
     loadSubjectFilter()
-
-    loadSessions({subject_id: "", date_from: "", date_to: ""})
-
+    applyFilters()
     document.getElementById("applyFilter").addEventListener("click", applyFilters)
     document.getElementById("clearFilter").addEventListener("click", clearFilters)
 })
