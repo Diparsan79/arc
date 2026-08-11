@@ -138,3 +138,52 @@ function render(data) {
         buildTimeChart(data.time_breakdown)
     }
 }
+
+
+function buildDistractionsHTML(distractions) {
+    if (distractions.length == 0) return ""
+
+    let max = distractions[0][1]
+    let html = ""
+
+    for (let i=0; i < distractions.length; i++) {
+        let name = distractions[i][0]
+        let count = distractions[i][1]
+        let pct = Math.round((count / max) * 100)
+
+        html += 
+            '<div class="distraction-row">' +
+                '<div class="distraction-name">' + name + '</div>' +
+                '<div class="distraction-bar-wrap">' +
+                    '<div class="distraction-bar" style="width:' + pct + '%"</div>' +
+                '</div>' +
+                '<div class="distraction-count">' + count + 'x</div>' +
+            '</div>'
+    }
+    return html
+}
+
+async function loadInsights() {
+    try {
+        let res = await fetch(API + "/stats/insights")
+        let data = await res.json()
+
+        if (data.empty) {
+            document.getElementById("insightsMain").innerHTML =
+                '<div class="empty-state" style="margin-top:4rem">' +
+                'log at least a few sessions to see insights</div>'
+            return
+        }
+
+        render(data)
+
+    } catch(e) {
+        console.log("insights Failed", e)
+        document.getElementById("insightsMain").innerHTML =
+            '<div class="empty-state" style="margin-top:4rem">failed to load insights'
+    }
+}
+
+document.addEventListener("DOMContentloaded", function() {
+    loadInsights()
+})

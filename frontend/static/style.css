@@ -611,3 +611,100 @@ input[type="color"] {
 .focus-dot.filled {
     background: var(--red);
 }
+
+/* insightsSSS */
+.insight-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+.insight-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+}
+
+.insight-card.warn {
+    border-color: var(--red-dim);
+}
+
+
+.insight-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--red);
+    letter-spacing: 0.1rem;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+}
+
+.insight-big {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--red);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+}
+
+.insight-big {
+    font-family: var(--font-mono);
+    font-size: 2rem;
+    color: var(--white);
+    margin-bottom: 0.4rem;
+    line-height: 1;
+}
+
+.insight-unit {
+    font-size: 1rem;
+    color: var(--dim);
+    margin-left: 0.25rem;
+}
+
+.insight-sub {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--dim);
+}
+
+.best-time-label {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--dim);
+}
+
+/* distractions */
+.distraction-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem 0;
+}
+
+.distraction-name {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--white);
+    width: 100px;
+    flex-shrink: 0;
+}
+
+.distraction-bar-wrap {
+    flex: 1;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.distraction-count {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--dim);
+    width: 30px;
+    text-align: right;
+}
+
