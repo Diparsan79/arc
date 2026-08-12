@@ -26,4 +26,30 @@ class Session(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     subject = relationship("Subject", back_populates="sessions")
-    
+
+
+class Grade(Base):
+    __tablename__ = "grades"
+
+    id = Column(Integer, primary_key=True, index=True)
+    subject_id= Column(Integer, ForeignKey("subjects.id", ondelete="CASCADE"), nullable=False)
+    score = Column(Integer, nullable=False)
+    max_score = Column(Integer, nullable=False)
+    exam_type = Column(String, default="test")
+    label = Column(String, default="")
+    exam_date = Column(DateTime(timezone=True), nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    subject = relationship("subject", backref="grades")
+
+
+class Exam(Base):
+    __tablename__ = "exams"
+
+    id = Column(Integer, primary_key=True, index=True)
+    subject_id = Column(Integer, ForeignKey("subjects.id", ondelete="CASCADE"), nullable=False)
+    label = Column(String, nullable=False)
+    exam_date = Column(DateTime(timezone=True), nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    subject = relationship("Subject", backref="exams")

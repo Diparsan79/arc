@@ -85,5 +85,44 @@ def insights(db: Session = Depends(get_db)):
         return {"empty": True}
     return data
 
+# grades
+@app.get("/grades", response_model=list[schemas.GradeResponse])
+def list_grades(subject_id: Optional[int] = None, db: Session = Depends(get_db)):
+    return crud.get_grades(db, subject_id=subject_id)
+
+@app.post("/grades", response_model=schemas.GradeResponse)
+def create_grade(grade: schemas.gradeCreate, db: Session = Depends(get_db)):
+    subject = crud.get_subject(db, grade.subject_id)
+    if not subject:
+        raise HTTPException(status_code=404, detail="Subject not found")
+    return crud.create_grade(db, grade)
+
+@app.delete("/grades/{grade_id}")
+def delete_grade(grade_id: int, db: Session = Depends(get_db)):
+    if not crud.delete_grade(db, grade_id):
+        raise HTTPException(status_code=404, details="Grade not found")
+    return {"message": "deleted"}
+
+@app.get("/stats/correlation")
+def grade_correlation(db: Session = Depends(get_db)):
+    return crud.get_grade_correlation(db)
+
+# exams
+@app.get("/exams")
+def list_exams(db, Session = Depends(get_db)):
+    return crud.get_upcoming_exams(db)
+
+@app.post("/exams", response_model=schemas.ExamResponse)
+def create_exam(exam: schemas.ExamCreate, db: Session = Depends(get_db)):
+    subject = crud.get_subject(db, exam.subject_id)
+    if not subject:
+        raise HTTPException(status_code=404, detail="Subject not found")
+    return crud.create_exam(db, exam)
+
+@app.delete("/exams/{exam_id}")
+def delete_exam(exam_id: int, db: Session = Depends(get_db)):
+    if not crud.delete_exam(db, exam_id):
+        raise HTTPException(status_code=404, detail="exam not found")
+    return {"message": "deleted"}
 
 app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")

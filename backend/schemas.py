@@ -56,4 +56,45 @@ class DayBar(BaseModel):
 
 class WeekStats(BaseModel):
     days: list[DayBar]
-    
+
+
+class GradeCreate(BaseModel):
+    subject_id: int
+    score: int = Field(..., ge=0)
+    max_score: int = Field(..., gt=0)
+    exam_type: str ="test"
+    label: str = ""
+    exam_date: str
+
+class GradeResponse(BaseModel):
+    id: int
+    subject_id: int
+    score: int
+    max_score: int
+    exam_type: str
+    label: str
+    exam_date: datetime
+    created_at: datetime
+    subject: SubjectResponse
+
+    class Config:
+        from_attributes = True
+
+
+# exam schemas
+
+class ExamCreate(BaseModel):
+    subject_id: int
+    label: str
+    exam_date: str
+
+class ExamResponse(BaseModel):
+    id: int
+    subject_id: int
+    label: str
+    exam_date: datetime
+    created_at: datetime
+    subject: SubjectResponse
+
+    class Config:
+        from_attributes = True

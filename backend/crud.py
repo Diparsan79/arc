@@ -285,3 +285,103 @@ def get_insights(db: Session):
         "weekly_avg_minutes": weekly_avg,
         "total_sessions": len(sessions)
     }
+
+#grades
+def get_grades(db: Session, subject_id=None):
+    q = db.query(models.Grade).order_by(models.Grade.exam_date.desc())
+    if subject_id:
+        q = q.filter(models.Grade.subject_id == subject_id)
+    return q.all()
+
+def create_grade(db: Session, grade: schemas.GradeCreate):
+    from datetime import datetime
+    db_grade = models.Grade(
+        subject_id = grade.subject_id,
+        score = grade.score,
+        max_score = grade.max_score,
+        exam_type = grade.exam_type,
+        label = grade.label,
+        exam_date = datetime.strptime(grade.exam_date, "%Y-%m-%d"),
+    )
+    db.add(db_grade)
+    db.commit()
+    db.refresh(db_grade)
+    return db_grade
+
+def delete_grade(db: Session, grade_id: int):
+    g = db.query(models.Grade).filter(models.Grade.id == grade_id).first()
+    if not g:
+        return False
+    db.delete(g)
+    db.commit()
+    return True
+
+def get_grade_correlation(db: Session):
+    grades = db.query(models.Grade).order_by(models.Grade.exam_date).all()
+    result = []
+
+    for g in grades:
+        exam_date = g.exam_date.date()
+        two_weeks_before = exam_date - timedelta(days=14)
+
+        study_sessions = db.query(models.Session).filter(
+            models.Session.subject_id == g.subject_id,
+            cast(models.Session.created_at, Date) >= two_weeks_before,
+            cast(models.Session.created_at, Date) < exam_date,
+        ).all()
+
+        study_mins = sum(s.duration for s in study_sessions)
+        pct = round((g.score / g.max_score) * 100, 1)
+
+        result.append({
+            "subject": g.subject.name,
+            "color": g.subject.color,
+            "label": g.label or g.exam_type,
+            "score_pct": pct,
+            "study_hours": round(study_mins/ 60 , 1),
+            "exam_date": exam_date.isoformat(),
+        })
+
+    return result
+
+# exams
+
+def get_upcoming_exams(db: Session):
+    today = date.today()
+    exams = db.query(models.Exam).filter(
+        cast(models.Exam.exam_date, Date) >= today
+    ).order_by(models.Exam.exam_date).all()
+
+    result = []
+    for e in exams:
+        days_left = (e.exam_date.date() - today).days
+        result.append({
+            "id": e.id,
+            "subject": e.subject.name,
+            "color": e.subject.color,
+            "label": e.label,
+            "exam_date": e.exam_date.date().isoformat(),
+            "days_left": days_left,
+        })
+
+    return result
+
+def create_exam(db: Session, exam: schemas.ExamCreate):
+    from datetime import datetime
+    db_exam = models.Exam(
+        subject_id = exam.subject_id,
+        label = exam.label,
+        exam_date = datetime.strptime(exam.exam_date, "%Y-%m-%d"),
+    )
+    db.add(db_exam)
+    db.commit()
+    db.refresh(db_exam)
+    return db_exam
+
+def delete_exam(db: Session, exam_id: int):
+    e = db.query(models.Exam).filter(models.Exam.id == exam_id).first()
+    if not e:
+        return False
+    db.delete(e)
+    db.commit()
+    return True
