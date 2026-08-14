@@ -708,3 +708,110 @@ input[type="color"] {
     text-align: right;
 }
 
+/* exam countdown */
+.exam-cards {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.exam-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.5rem;
+    flex: 1;
+    min-width: 160px;
+    border-left: 3px solid var(--red);
+}
+
+.exam-card.urgent {
+    border-left-color : #ff9f43;
+    background: rgba(255, 259, 67, 0, 0.05);
+}
+
+.exam-card.very-urgent {
+    border-left-color: #cc0000;
+    background: rgba(204, 0,0,0.05);
+}
+
+.exam-days {
+    font-family: var(--font-mono);
+    font-size: 2rem;
+    color: var(--white);
+    line-height: 1;
+}
+
+.exam-days span {
+    font-size: 0.8rem;
+    color: var(--dim);
+    margin-left: 0.25rem;
+}
+.exam-subject {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--red);
+    margin-top: 0.4rem;
+    letter-spacing: 0.05em;
+}
+
+.exam-label {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--dim);
+    margin-top: 0.2rem;
+}
+
+.exam-delete {
+    margin-top: 0.05rem;
+}
+
+/* grade row */
+.grade-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.grade-row:last-child {
+    border-bottom: none;
+}
+
+.grade-pct {
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    color: var(--white);
+    width: 60px;
+    flex-shrink: 0;
+}
+
+.grade-pct.high { color: #1dd1a1;}
+.grade-pct-mid { color: #ff9f43;}
+.grade-pct.low { color: #cc0000;}
+
+.grade-info {
+    flex: 1;
+}
+
+.grade-subject {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--white);
+}
+
+.grade-meta {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--dim);
+    margin-top: 0.2rem;
+}
+
+.correlation-note {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--dim);
+    margin-top: 1rem;
+    text-align: center;
+}

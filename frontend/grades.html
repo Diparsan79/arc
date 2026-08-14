@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARC — Grades</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <nav>
+        <span class="nav-logo">ARC</span>
+        <div class="nav-links">
+            <a href="/index.html">dashboard</a>
+            <a href="/timer.html">timer</a>
+            <a href="/history.html">history</a>
+            <a href="/insights.html">insights</a>
+            <a href="/grades.html" class="active">grades</a>
+        </div>
+    </nav>
+
+    <main>
+
+        <div class="section">
+            <div class="section-label">upcoming exams</div>
+            <div id="examCountdown">
+                <div class="empty-state">no exams scheduled</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-label">schedule an exam</div>
+            <div class="card">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>subject</label>
+                        <select id="examSubject"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>label</label>
+                        <input type="text" id="examLabel" placeholder="e.g. Unit 3 Final">
+                    </div>
+                    <div class="form-group">
+                        <label>date</label>
+                        <input type="date" id="examDate">
+                    </div>
+                </div>
+                <button class="btn-primary" id="addExamBtn">schedule</button>
+                <div id="examStatus" class="status hidden"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-label">study hours vs grade</div>
+            <div class="card">
+                <canvas id="correlationChart" height="200"></canvas>
+                <div class="correlation-note">
+                    each dot is one exam — hours studied in the 2 weeks before
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-label">log a grade</div>
+            <div class="card">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>subject</label>
+                        <select id="gradeSubject"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>label</label>
+                        <input type="text" id="gradeLabel" placeholder="e.g. Mid-term">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>score</label>
+                        <input type="number" id="gradeScore" placeholder="78" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>out of</label>
+                        <input type="number" id="gradeMax" placeholder="100" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label>type</label>
+                        <select id="gradeType">
+                            <option value="test">test</option>
+                            <option value="exam">exam</option>
+                            <option value="assignment">assignment</option>
+                            <option value="quiz">quiz</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>date</label>
+                        <input type="date" id="gradeDate">
+                    </div>
+                </div>
+                <button class="btn-primary" id="addGradeBtn">log grade</button>
+                <div id="gradeStatus" class="status hidden"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-label">grade history</div>
+            <div id="gradeList">
+                <div class="empty-state">no grades logged yet</div>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="/static/grades.js"></script>
+</body>
+</html>
