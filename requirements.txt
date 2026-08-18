@@ -9,6 +9,7 @@ dnspython==2.8.0
 email-validator==2.3.0
 fastapi==0.111.0
 fastapi-cli==0.0.32
+flake8==7.3.0
 h11==0.16.0
 httpcore==1.0.9
 httptools==0.8.0
@@ -18,11 +19,14 @@ Jinja2==3.1.6
 Mako==1.3.12
 markdown-it-py==4.2.0
 MarkupSafe==3.0.3
+mccabe==0.7.0
 mdurl==0.1.2
 orjson==3.11.9
 psycopg2-binary==2.9.9
+pycodestyle==2.14.0
 pydantic==2.7.1
 pydantic_core==2.18.2
+pyflakes==3.4.0
 Pygments==2.20.0
 python-dotenv==1.0.1
 python-multipart==0.0.32
