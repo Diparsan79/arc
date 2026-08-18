@@ -63,7 +63,7 @@ function startTimer() {
     sid = parseInt(sel.value)
     sname = sel.options[sel.selectedIndex].dataset.name
     stime = Date.now() 
-    elapsed: 0
+    elapsed = 0
     paused = false
 
     localStorage.setItem("arc_timer", JSON.stringify({
