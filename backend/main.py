@@ -122,3 +122,4 @@ def delete_exam(exam_id: int, db: Session = Depends(get_db)):
     return {"message": "deleted"}
 
 app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
+
