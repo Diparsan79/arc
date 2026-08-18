@@ -50,7 +50,7 @@ def get_sessions(db: Session, limit=100, subject_id=None, date_from=None, date_t
     if date_to:
         try:
             dt = datetime.strptime(date_to, "%Y-%m-%d")
-            q = q.filter(models.Session.created_at >= df)
+            q = q.filter(models.Session.created_at <= dt)
         except:
             pass
 
@@ -123,25 +123,6 @@ def get_week_stats(db: Session):
         ))
     return schemas.WeekStats(days=days)
 
-def get_subject_stats(db: Session):
-    subjects = get_subjects(db)
-    result = []
-
-    for result in subjects:
-        total_minutes = db.query(
-            func.sum(models.Session.duration)
-        ).filter(
-            models.Session.subject_id == subject.id
-        ).scalar() or 0
-
-        result.append({
-            "subject": subject.name,
-            "color": subject.color,
-            "total_minutes": total_minutes,
-        })
-
-    # sort most studied and so on
-    return sorted(result, key=lambda x:x["total_minutes"], reverse=True)
 
 def get_subject_stats(db: Session):
     subjects =  get_subjects(db)

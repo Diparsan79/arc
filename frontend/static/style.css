@@ -1,25 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+
 :root {
-    --bg: #0a0a0a;
-    --surface: #111111;
-    --surface-2: #1a1a1a;
-    --border: #222222;
-    --border-2: ##2a2a2a;
-    --red: #cc0000;
-    --red-dim: #550000;
-    --red-glow: rgba(204, 0,0,0.15);
-    --white: #eeeeee;
-    --white-dim: #aaaaaa;
-    --dim: #555555;
-    --success: #1dd1a1;
-    --warning: #ff9f43;
+    --bg: #050505;
+    --surface: rgba(17, 17, 17, 0.6);
+    --surface-2: rgba(26, 26, 26, 0.8);
+    --border: rgba(255, 255, 255, 0.1);
+    --border-2: rgba(255, 255, 255, 0.2);
+    --red: #ff3366;
+    --red-dim: #990033;
+    --red-glow: rgba(255, 51, 102, 0.25);
+    --white: #ffffff;
+    --white-dim: #bbbbbb;
+    --dim: #777777;
+    --success: #00e676;
+    --warning: #ffb300;
 
-    --font-mono: 'Courier New', Courier, monospace;
-    --font-body: 'Georgia', serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-body: 'Outfit', sans-serif;
 
-    --radius: 3px;
+    --radius: 12px;
     --gap: 1.5rem;
 
-    --nav-height: 56px;
+    --nav-height: 64px;
 }
 
 *, *::before, *::after {
@@ -34,20 +36,13 @@ html {
 
 
 body {
-    background: var(--bg);
+    background: radial-gradient(circle at 10% 20%, rgba(30,0,10,1) 0%, var(--bg) 90%);
+    background-attachment: fixed;
     color: var(--white);
     font-family: var(--font-body);
     font-size: 15px;
     line-height: 1.6;
     min-height: 100vh;
-
-    background-image: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0,0,0,0.03) 2px,
-        rgba(0,0,0,0.03) 4px
-    );
 }
 
 /* scrollbar */
@@ -67,14 +62,16 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.2rem;
+    padding: 0 2rem;
     height: var(--nav-height);
     border-bottom: 1px solid var(--border);
     position: sticky;
     top: 0;
-    background: rgba(10,10,10,0.95);
-    backdrop-filter: blur(8px);
+    background: rgba(5, 5, 5, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     z-index: 100;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
 .nav-logo {
@@ -178,17 +175,22 @@ main {
 
 .card {
     background: var(--surface);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
     gap: var(--gap);
-    transition: border-color 0.2s;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
 }
 
 .card:hover {
     border-color: var(--border-2);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
 }
 
 .form-group {
@@ -286,23 +288,24 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .btn-primary {
-    background: var(--red);
-    border: 1px solid var(--red);
+    background: linear-gradient(135deg, #ff3366 0%, #ff5e62 100%);
+    border: none;
     border-radius: var(--radius);
     color: var(--white);
     cursor: pointer;
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    letter-spacing: 0.08rem;
-    padding: 0.6rem 1.25rem;
-    transition: all 0.15s;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.05rem;
+    padding: 0.7rem 1.5rem;
+    transition: all 0.2s ease;
     align-self: flex-start;
+    box-shadow: 0 4px 15px var(--red-glow);
 }
 
 .btn-primary:hover {
-    background: var(--red-dim);
-    border-color: var(--red-dim);
-    box-shadow: 0 0 12px var(--red-glow);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 51, 102, 0.4);
 }
 
 .btn-primary:disabled {

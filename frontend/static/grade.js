@@ -233,7 +233,7 @@ async function addGrade() {
     }
 
     try {
-        let res = await fetch(APi + "/grades", {
+        let res = await fetch(API + "/grades", {
             method: "POST",
             headers: { "Content-Type": "application/json"},
             body: JSON.stringify({
