@@ -1,4 +1,0 @@
-providers = ["python"]
-
-[phases.setup]
-aptPkgs = ["...", "libpq5", "libpq-dev", "gcc"]
