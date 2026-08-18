@@ -3,6 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from typing import Optional
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 from .database import engine, Base, get_db
 from . import crud, schemas, models
