@@ -1,5 +1,14 @@
 const API = ""
 
+function escapeHTML(str) {
+    if (!str) return "";
+    return String(str).replace(/[&<>'"]/g, function(tag) {
+        let charsToReplace = { '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' };
+        return charsToReplace[tag] || tag;
+    });
+}
+
+
 let subjectData = []
 
 function setStatus(id, msg, type) {
@@ -42,8 +51,8 @@ function renderCards(data) {
         let div = document.createElement("div")
         div.className = "subject-card"
         div.innerHTML =
-            '<div class="subject-color" style="background:' + s.color + '"></div>' + 
-            '<div class="subject-name">' + s.subject +  '</div>' +
+            '<div class="subject-color" style="background:' + escapeHTML(s.color) + '"></div>' + 
+            '<div class="subject-name">' + escapeHTML(s.subject) +  '</div>' +
             '<div class="subject-stats">' + 
                 fmtTime(s.total_minutes) + '<br>' + 
                 s.sessions + ' session' + (s.sessions != 1 ? 's' : '') + ' . avg focus ' + s.avg_focus +

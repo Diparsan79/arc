@@ -53,3 +53,15 @@ class Exam(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     subject = relationship("Subject", backref="exams")
+
+class ActiveTimer(Base):
+    __tablename__ = "active_timers"
+
+    id = Column(Integer, primary_key=True, index=True)
+    subject_id = Column(Integer, ForeignKey("subjects.id", ondelete="CASCADE"), nullable=False)
+    start_time_ms = Column(Integer, nullable=False)
+    total_paused_ms = Column(Integer, default=0)
+    last_pause_time_ms = Column(Integer, nullable=True)
+    is_paused = Column(Integer, default=0)
+
+    subject = relationship("Subject")

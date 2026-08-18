@@ -48,11 +48,37 @@ def list_sessions(
     return crud.get_sessions(db, subject_id=subject_id, date_from=date_from, date_to=date_to)
 
 @app.post("/sessions", response_model=schemas.SessionResponse)
-def create_session(session: schemas.SessionCreate, db: Session = Depends(get_db)):
+def create_session(
+    session: schemas.SessionCreate, 
+    timestamp_ms: int,
+    db: Session = Depends(get_db)
+):
     subject = crud.get_subject(db, session.subject_id)
     if not subject:
         raise HTTPException(status_code=404, detail="Subject not found")
-    return crud.create_session(db, session)
+        
+    duration = crud.stop_timer_duration(db, timestamp_ms)
+    return crud.create_session(db, session, duration)
+
+# timers
+@app.post("/timer/start", response_model=schemas.TimerResponse)
+def start_timer(timer_in: schemas.TimerStart, db: Session = Depends(get_db)):
+    return crud.start_timer(db, timer_in)
+
+@app.post("/timer/pause", response_model=schemas.TimerResponse)
+def pause_timer(action: schemas.TimerAction, db: Session = Depends(get_db)):
+    return crud.pause_timer(db, action)
+
+@app.post("/timer/resume", response_model=schemas.TimerResponse)
+def resume_timer(action: schemas.TimerAction, db: Session = Depends(get_db)):
+    return crud.resume_timer(db, action)
+
+@app.get("/timer/active", response_model=schemas.TimerResponse)
+def get_active_timer(db: Session = Depends(get_db)):
+    t = crud.get_active_timer(db)
+    if not t:
+        raise HTTPException(status_code=404, detail="No active timer")
+    return t
 
 @app.delete("/sessions/{session_id}")
 def delete_session(session_id: int, db: Session = Depends(get_db)):

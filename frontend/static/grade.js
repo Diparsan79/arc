@@ -25,7 +25,7 @@ async function loadSubjects() {
         let selectors = ["examSubject", "gradeSubject"]
         selectors.forEach(function(id) {
             let sel = document.getElementById(id)
-            sel.innerHTMl = '<option value="">select</option>'
+            sel.innerHTML = '<option value="">select</option>'
             data.forEach(function(s) {
                 let o = document.createElement("option")
                 o.value = s.id
@@ -124,7 +124,7 @@ async function loadCorrelation() {
             return
         }
 
-        new CharacterData(ctx, {
+        new Chart(ctx, {
             type: "scatter",
             data: {
                 datasets : [{
@@ -196,7 +196,7 @@ async function loadGrades() {
             let row = document.createElement("div")
             row.className = "grade-row"
             row.innerHTML = 
-                '<div class="grade-pct" ' + pctColor(pct) + '">' + pct + '%</div>' + 
+                '<div class="grade-pct ' + pctColor(pct) + '">' + pct + '%</div>' + 
                 '<div class="grade-info">' +
                     '<div class="grade-subject">' +
                         '<span style="color:' + g.subject.color + '">■</span> ' +
@@ -206,7 +206,7 @@ async function loadGrades() {
                         g.score + '/' + g.max_score + ' . ' + fmtDate(g.exam_date) +
                     '</div>' +
                 '</div>' +
-                '<button class="btn-delete" onclick="deleteGrade(' + g.id + ')"delete</button>'
+                '<button class="btn-delete" onclick="deleteGrade(' + g.id + ')">delete</button>'
             cont.appendChild(row)
         }
     } catch(e) {
@@ -222,7 +222,7 @@ async function addGrade() {
     let type = document.getElementById("gradeType").value
     let date = document.getElementById("gradeDate").value
 
-    if (!sid || score || !max || !date) {
+    if (!sid || !score || !max || !date) {
         setStatus("gradeStatus", "fill in your required fields", "error")
         return
     }

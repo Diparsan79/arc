@@ -1,5 +1,14 @@
 const API = ""
 
+function escapeHTML(str) {
+    if (!str) return "";
+    return String(str).replace(/[&<>'"]/g, function(tag) {
+        let charsToReplace = { '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' };
+        return charsToReplace[tag] || tag;
+    });
+}
+
+
 async function loadToday() {
     document.getElementById("todayTime").textContent="-"
     try {
@@ -110,9 +119,9 @@ async function loadRecent() {
             let row = document.createElement("div")
             row.className = "session-row"
             row.innerHTML =
-                '<div class="session-dot" style="background:' + (s.subject.color || "#cc0000") + '"></div>' + 
+                '<div class="session-dot" style="background:' + escapeHTML(s.subject.color || "#cc0000") + '"></div>' + 
                 '<div class="session-info">' +
-                    '<div class="session-subject">' + s.subject.name + '</div>' + 
+                    '<div class="session-subject">' + escapeHTML(s.subject.name) + '</div>' + 
                     '<div class="session-meta">' + dateStr + ' . ' + dur + '</div>' +
                 '</div>' +
                 '<div class="session-focus">focus ' + s.focus_rating + '/5</div>'

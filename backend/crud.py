@@ -61,10 +61,10 @@ def get_session(db: Session, session_id: int):
         models.Session.id == session_id
     ).first()
 
-def create_session(db: Session, session: schemas.SessionCreate):
+def create_session(db: Session, session: schemas.SessionCreate, duration: int):
     db_session = models.Session(
         subject_id=session.subject_id,
-        duration=session.duration,
+        duration=duration,
         focus_rating=session.focus_rating,
         notes=session.notes,
         location=session.location,
@@ -366,3 +366,59 @@ def delete_exam(db: Session, exam_id: int):
     db.delete(e)
     db.commit()
     return True
+
+# active timers
+def start_timer(db: Session, timer_in: schemas.TimerStart):
+    db.query(models.ActiveTimer).delete()
+    db.commit()
+    
+    t = models.ActiveTimer(
+        subject_id=timer_in.subject_id,
+        start_time_ms=timer_in.timestamp_ms
+    )
+    db.add(t)
+    db.commit()
+    db.refresh(t)
+    return t
+
+def get_active_timer(db: Session):
+    return db.query(models.ActiveTimer).first()
+
+def pause_timer(db: Session, action: schemas.TimerAction):
+    t = get_active_timer(db)
+    if not t or t.is_paused:
+        return t
+    t.is_paused = 1
+    t.last_pause_time_ms = action.timestamp_ms
+    db.commit()
+    db.refresh(t)
+    return t
+
+def resume_timer(db: Session, action: schemas.TimerAction):
+    t = get_active_timer(db)
+    if not t or not t.is_paused:
+        return t
+    
+    paused_duration = action.timestamp_ms - t.last_pause_time_ms
+    t.total_paused_ms += paused_duration
+    t.is_paused = 0
+    t.last_pause_time_ms = None
+    db.commit()
+    db.refresh(t)
+    return t
+
+def stop_timer_duration(db: Session, timestamp_ms: int) -> int:
+    t = get_active_timer(db)
+    if not t:
+        return 0
+    
+    end_time = timestamp_ms
+    if t.is_paused and t.last_pause_time_ms:
+        end_time = t.last_pause_time_ms
+        
+    elapsed_ms = end_time - t.start_time_ms - t.total_paused_ms
+    duration_mins = round(elapsed_ms / 60000)
+    
+    db.delete(t)
+    db.commit()
+    return max(1, duration_mins)

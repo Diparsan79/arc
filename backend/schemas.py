@@ -22,7 +22,6 @@ class SubjectResponse(BaseModel):
 # session schema
 class SessionCreate(BaseModel):
     subject_id: int
-    duration: int = Field(..., gt=0)
     focus_rating: int = Field(..., ge=1, le=5)
     notes: str =""
     location: str = "home"
@@ -95,6 +94,26 @@ class ExamResponse(BaseModel):
     exam_date: datetime
     created_at: datetime
     subject: SubjectResponse
+
+    class Config:
+        from_attributes = True
+
+# timer schemas
+
+class TimerStart(BaseModel):
+    subject_id: int
+    timestamp_ms: int
+
+class TimerAction(BaseModel):
+    timestamp_ms: int
+
+class TimerResponse(BaseModel):
+    id: int
+    subject_id: int
+    start_time_ms: int
+    total_paused_ms: int
+    last_pause_time_ms: Optional[int]
+    is_paused: int
 
     class Config:
         from_attributes = True

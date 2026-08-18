@@ -1,5 +1,14 @@
 const API = ""
 
+function escapeHTML(str) {
+    if (!str) return "";
+    return String(str).replace(/[&<>'"]/g, function(tag) {
+        let charsToReplace = { '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' };
+        return charsToReplace[tag] || tag;
+    });
+}
+
+
 let allSessions = []
 
 function setStatus(id, msg, type) {
@@ -67,19 +76,19 @@ function renderSessions(sessions) {
         let row = document.createElement("div")
         row.className = "history-row"
 
-        let notesHtml = s.notes ? '<div class="history-notes">' + s.notes + '</div>' : ""
-        let distHtml = s.distractions ? "distractions: " + s.distractions + "<br>" : ""
+        let notesHtml = s.notes ? '<div class="history-notes">' + escapeHTML(s.notes) + '</div>' : ""
+        let distHtml = s.distractions ? "distractions: " + escapeHTML(s.distractions) + "<br>" : ""
 
         row.innerHTML =
             '<div class="history-left">' +
                 '<div class="history-subject">' +
-                    '<div class="session-dot" style="background:' + (s.subject.color || "#cc0000") + '"></div>' +
-                    s.subject.name +
+                    '<div class="session-dot" style="background:' + escapeHTML(s.subject.color || "#cc0000") + '"></div>' +
+                    escapeHTML(s.subject.name) +
                 '</div>' + 
                 '<div class="history-detail">' +
                     fmtDate(s.created_at) + '<br>' +
-                    fmtTime(s.duration) + ' . ' + s.location + '<br>' +
-                    distHtml + 
+                    fmtTime(s.duration) + ' . ' + escapeHTML(s.location) + '<br>' +
+                    distHtml + notesHtml + 
                 '</div>' + 
             '</div>' + 
             '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.5rem">' +
@@ -169,7 +178,7 @@ function clearFilters() {
     document.getElementById("filterSubject").value = ""
     document.getElementById("filterFrom").value = ""
     document.getElementById("filterTo").value = ""
-    loadSessions({ subject_id: "", date_from: "", date_to: ""})
+    applyFilters()
 }
 
 document.addEventListener("DOMContentLoaded", function() {

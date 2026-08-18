@@ -7,13 +7,14 @@ let elapsed = 0
 let iid = null
 let paused = false
 let pausedAt = null
+let stopTimeMs = null
 
 function fmt(ms) {
-    let s = Math.floor(ms/1000)
-    let h = Math.floor(s/3600)
-    let m = Math.floor((s%3600) / 60)
-    s = s %60
-    return (h<10?"0"+h:h) + ":" + (m<10?"0"+m:m) + ":" + (s<10?"0"+s:s)
+    let s = Math.floor(ms / 1000)
+    let h = Math.floor(s / 3600)
+    let m = Math.floor((s % 3600) / 60)
+    s = s % 60
+    return (h < 10 ? "0" + h : h) + ":" + (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s)
 }
 
 function toMins(ms) {
@@ -32,28 +33,28 @@ function showPhase(p) {
 function setStatus(id, msg, type) {
     let el = document.getElementById(id)
     el.textContent = msg
-    el.className = "status" + type
+    el.className = "status " + type
 }
 
 async function loadSubjects() {
     try {
-        let res = await fetch("/subjects")
+        let res = await fetch(API + "/subjects")
         let data = await res.json()
         let sel = document.getElementById("timerSubject")
         sel.innerHTML = `<option value="">select a subject</option>`
-        for (let i = 0; i <data.length; i++) {
+        for (let i = 0; i < data.length; i++) {
             let o = document.createElement("option")
             o.value = data[i].id
             o.textContent = data[i].name
             o.dataset.name = data[i].name
             sel.appendChild(o)
         }
-    } catch(e) {
+    } catch (e) {
         console.log("couldn't load subjects", e)
     }
 }
 
-function startTimer() {
+async function startTimer() {
     let sel = document.getElementById("timerSubject")
     if (!sel.value) {
         alert("pick a subject")
@@ -62,9 +63,19 @@ function startTimer() {
 
     sid = parseInt(sel.value)
     sname = sel.options[sel.selectedIndex].dataset.name
-    stime = Date.now() 
+    stime = Date.now()
     elapsed = 0
     paused = false
+
+    try {
+        await fetch(API + "/timer/start", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ subject_id: sid, timestamp_ms: stime })
+        })
+    } catch (e) {
+        console.log("Failed to sync timer start to server", e)
+    }
 
     localStorage.setItem("arc_timer", JSON.stringify({
         sid: sid, name: sname, stime: stime
@@ -74,14 +85,14 @@ function startTimer() {
     document.getElementById("timerDisplay").classList.add("running")
     showPhase("timerPhase")
 
-    iid = setInterval(function() {
+    iid = setInterval(function () {
         if (paused) return
         elapsed = Date.now() - stime
         document.getElementById("timerDisplay").textContent = fmt(elapsed)
     }, 1000)
 }
 
-function pauseTimer() {
+async function pauseTimer() {
     if (paused) {
         stime += Date.now() - pausedAt
         paused = false
@@ -90,6 +101,13 @@ function pauseTimer() {
         document.getElementById("timerDisplay").classList.remove("paused")
         document.getElementById("timerDisplay").classList.add("running")
         document.getElementById("timerStatus").textContent = "studying..."
+
+        fetch(API + "/timer/resume", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ timestamp_ms: Date.now() })
+        }).catch(e => console.log(e))
+
     } else {
         paused = true
         pausedAt = Date.now()
@@ -97,12 +115,19 @@ function pauseTimer() {
         document.getElementById("timerDisplay").classList.remove("running")
         document.getElementById("timerDisplay").classList.add("paused")
         document.getElementById("timerStatus").textContent = "paused"
+
+        fetch(API + "/timer/pause", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ timestamp_ms: pausedAt })
+        }).catch(e => console.log(e))
     }
 }
 
 function stopTimer() {
     clearInterval(iid)
-    if (!paused) elapsed = Date.now() - stime
+    stopTimeMs = Date.now()
+    if (!paused) elapsed = stopTimeMs - stime
     localStorage.removeItem("arc_timer")
     document.getElementById("timerDisplay").classList.remove("running")
 
@@ -121,26 +146,27 @@ function checkCrash() {
     let lost = Date.now() - d.stime
     let mins = toMins(lost)
 
-    let ok =  confirm("unfinished session found!\n" + d.sname + " . ~" + mins + "mins\nlog it?")
+    let ok = confirm("unfinished session found!\n" + d.sname + " . ~" + mins + "mins\nlog it?")
 
     if (ok) {
         sid = d.sid
-        sname= d.sname
+        sname = d.sname
         elapsed = lost
+        stopTimeMs = Date.now()
         localStorage.removeItem("arc_timer")
         document.getElementById("logDuration").value = mins
         document.getElementById("sessionSummary").textContent = d.sname + " . recovered"
         showPhase("logPhase")
     } else {
-         localStorage.removeItem("arc_timer")
+        localStorage.removeItem("arc_timer")
     }
 }
 
 function initFocusBtns() {
     let btns = document.querySelectorAll("#logFocusSelector .focus-btn")
-    btns.forEach(function(btn) {
-        btn.addEventListener("click", function() {
-            btns.forEach(function(b) { b.classList.remove("selected") })
+    btns.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            btns.forEach(function (b) { b.classList.remove("selected") })
             btn.classList.add("selected")
             document.getElementById("logFocusRating").value = btn.dataset.value
         })
@@ -148,7 +174,6 @@ function initFocusBtns() {
 }
 
 async function saveSession() {
-    let dur = document.getElementById("logDuration").value
     let fr = document.getElementById("logFocusRating").value
     let notes = document.getElementById("logNotes").value
     let loc = document.getElementById("logLocation").value
@@ -164,12 +189,11 @@ async function saveSession() {
     btn.textContent = "saving"
 
     try {
-        let res = await fetch(API + "/sessions", {
+        let res = await fetch(API + "/sessions?timestamp_ms=" + stopTimeMs, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 subject_id: sid,
-                duration: parseInt(dur),
                 focus_rating: parseInt(fr),
                 notes: notes,
                 location: loc,
@@ -185,7 +209,7 @@ async function saveSession() {
             btn.disabled = false
             btn.textContent = "save session"
         }
-    } catch(e) {
+    } catch (e) {
         setStatus("logStatus", "network error, try again", "error")
         btn.disabled = false
         btn.textContent = "save session"
@@ -196,13 +220,15 @@ function discard() {
     if (confirm("discard session?")) window.location.href = "/timer.html"
 }
 
-document.addEventListener("DOMContentLoaded", function(){
-    initFocusBtns()
-    checkCrash()
-    loadSubjects()
-    document.getElementById("startBtn").addEventListener("click", startTimer)
-    document.getElementById("pauseBtn").addEventListener("click", pauseTimer)
-    document.getElementById("stopBtn").addEventListener("click", stopTimer)
-    document.getElementById("saveSessionBtn").addEventListener("click", saveSession)
-    document.getElementById("discardBtn").addEventListener("click", discard)
+document.addEventListener("DOMContentLoaded", function () {
+    if (document.getElementById("startBtn")) {
+        initFocusBtns()
+        checkCrash()
+        loadSubjects()
+        document.getElementById("startBtn").addEventListener("click", startTimer)
+        document.getElementById("pauseBtn").addEventListener("click", pauseTimer)
+        document.getElementById("stopBtn").addEventListener("click", stopTimer)
+        document.getElementById("saveSessionBtn").addEventListener("click", saveSession)
+        document.getElementById("discardBtn").addEventListener("click", discard)
+    }
 })

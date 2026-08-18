@@ -1,5 +1,14 @@
 const API = ""
 
+function escapeHTML(str) {
+    if (!str) return "";
+    return String(str).replace(/[&<>'"]/g, function(tag) {
+        let charsToReplace = { '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' };
+        return charsToReplace[tag] || tag;
+    });
+}
+
+
 function fmtTime(mins){
     let h = Math.floor(mins/ 60)
     let m = mins % 60
@@ -97,6 +106,8 @@ function render(data) {
                 '<div class="insight-sub">across all weeks logged</div>' +
             '</div>' +
 
+
+
             '<div class="insight-card">' + 
                 '<div class="insight-label">focus trend</div>' + 
                 '<div class="insight-big">' +
@@ -111,7 +122,7 @@ function render(data) {
             '<div class="insight-card ' + (data.avoided_subject ? "warn" : "") + '">' + 
                 '<div class="insight-label">most avoided</div>' +
                 '<div class="insight-big" style="font-size:1.2rem">' +
-                    (data.avoided_subject || "-") +
+                    (escapeHTML(data.avoided_subject) || "-") +
                 '</div>' +
                 '<div class="insight-sub">fewest sessions logged</div>' +
             '</div>' +
@@ -153,7 +164,7 @@ function buildDistractionsHTML(distractions) {
 
         html += 
             '<div class="distraction-row">' +
-                '<div class="distraction-name">' + name + '</div>' +
+                '<div class="distraction-name">' + escapeHTML(name) + '</div>' +
                 '<div class="distraction-bar-wrap">' +
                     '<div class="distraction-bar" style="width:' + pct + '%"></div>' +
                 '</div>' +
@@ -180,7 +191,7 @@ async function loadInsights() {
     } catch(e) {
         console.log("insights Failed", e)
         document.getElementById("insightsMain").innerHTML =
-            '<div class="empty-state" style="margin-top:4rem">failed to load insights'
+            '<div class="empty-state" style="margin-top:4rem">failed to load insights</div>'
     }
 }
 
