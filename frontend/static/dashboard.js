@@ -1,6 +1,7 @@
 const API = ""
 
 async function loadToday() {
+    document.getElementById("todayTime").textContent="-"
     try {
         let res = await fetch(API + "/stats/today")
         let data = await res.json()
@@ -25,6 +26,7 @@ async function loadToday() {
         }
             
     } catch(e) {
+        document.getElementById("todayTime").textContent="error"
         console.log("today stats failed", e)
     }
 }
