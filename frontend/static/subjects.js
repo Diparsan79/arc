@@ -59,7 +59,7 @@ function renderChart(data) {
 
     let ctx = document.getElementById("subjectChart").getContext("2d")
 
-    new CharacterData(ctx, {
+    new Chart(ctx, {
         type: "bar",
         data: {
             labels: labels,

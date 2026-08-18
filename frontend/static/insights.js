@@ -20,7 +20,7 @@ function buildTimeChart(breakdown) {
 
     let ctx = document.getElementById("timeChart").getContext("2d")
 
-    new CharacterData(ctx, {
+    new Chart(ctx, {
         type: "bar",
         data: {
             labels: labels,
@@ -92,19 +92,19 @@ function render(data) {
             '</div>' + 
 
             '<div class="insight-card">' +
-                'div class="insight-label">weekly average</div>' + 
-                '<div class="insight-big">' + fmtTime(data.weekly_avg_minutes) + '</div' + 
+                '<div class="insight-label">weekly average</div>' + 
+                '<div class="insight-big">' + fmtTime(data.weekly_avg_minutes) + '</div>' + 
                 '<div class="insight-sub">across all weeks logged</div>' +
             '</div>' +
 
-            '<div class="insight-card"' + 
+            '<div class="insight-card">' + 
                 '<div class="insight-label">focus trend</div>' + 
                 '<div class="insight-big">' +
                     (data.focus_trend > 0  ? "+" : "") + data.focus_trend +
                 '</div>' +
                 '<div class="insight-sub">' + trendArrow(data.focus_trend) + '</div>' + 
-                '<div class="insight-sub" style="margin-top:0.2rem"' +
-                    'early avg ' + data.early_avg_focus + ' → recent avg' + data.late_avg_focus + 
+                '<div class="insight-sub" style="margin-top:0.2rem">' +
+                    'early avg ' + data.early_avg_focus + ' → recent avg ' + data.late_avg_focus + 
                 '</div>' + 
             '</div>' + 
 
@@ -155,7 +155,7 @@ function buildDistractionsHTML(distractions) {
             '<div class="distraction-row">' +
                 '<div class="distraction-name">' + name + '</div>' +
                 '<div class="distraction-bar-wrap">' +
-                    '<div class="distraction-bar" style="width:' + pct + '%"</div>' +
+                    '<div class="distraction-bar" style="width:' + pct + '%"></div>' +
                 '</div>' +
                 '<div class="distraction-count">' + count + 'x</div>' +
             '</div>'
@@ -184,6 +184,6 @@ async function loadInsights() {
     }
 }
 
-document.addEventListener("DOMContentloaded", function() {
+document.addEventListener("DOMContentLoaded", function() {
     loadInsights()
 })

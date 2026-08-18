@@ -417,12 +417,15 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .hidden { display: none !important;}
 
 .empty-state {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
+    font-family: var(--font-body);
+    font-size: 1rem;
     color: var(--dim);
-    padding: 2.5rem 0;
+    padding: 3.5rem 0;
     text-align: center;
     letter-spacing: 0.03em;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: var(--radius);
+    border: 1px dashed var(--border-2);
 }
 
 .empty-state a {
@@ -454,13 +457,24 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .timer-display {
     font-family: var(--font-mono);
-    font-size: 5.5rem;
+    font-size: 6rem;
     color: var(--white);
-    letter-spacing: 0.02em;
+    letter-spacing: 0.05em;
     font-variant-numeric: tabular-nums;
     line-height: 1;
     text-shadow: 0 0 40px rgba(255,255,255,0.05);
     transition: color 0.3s, text-shadow 0.3s;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); text-shadow: 0 0 20px rgba(255, 51, 102, 0.4); }
+    50% { transform: scale(1.02); text-shadow: 0 0 40px rgba(255, 51, 102, 0.8); }
+    100% { transform: scale(1); text-shadow: 0 0 20px rgba(255, 51, 102, 0.4); }
+}
+
+.timer-display.running {
+    animation: pulse 2s infinite ease-in-out;
+    color: var(--red);
 }
 
 .timer-subject.paused {

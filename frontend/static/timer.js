@@ -71,6 +71,7 @@ function startTimer() {
     }))
 
     document.getElementById("timerSubjectName").textContent = sname
+    document.getElementById("timerDisplay").classList.add("running")
     showPhase("timerPhase")
 
     iid = setInterval(function() {
@@ -87,11 +88,13 @@ function pauseTimer() {
         pausedAt = null
         document.getElementById("pauseBtn").textContent = "pause"
         document.getElementById("timerDisplay").classList.remove("paused")
+        document.getElementById("timerDisplay").classList.add("running")
         document.getElementById("timerStatus").textContent = "studying..."
     } else {
         paused = true
         pausedAt = Date.now()
         document.getElementById("pauseBtn").textContent = "resume"
+        document.getElementById("timerDisplay").classList.remove("running")
         document.getElementById("timerDisplay").classList.add("paused")
         document.getElementById("timerStatus").textContent = "paused"
     }
@@ -100,14 +103,14 @@ function pauseTimer() {
 function stopTimer() {
     clearInterval(iid)
     if (!paused) elapsed = Date.now() - stime
-    localStorage.removeItem("sage_timer")
+    localStorage.removeItem("arc_timer")
+    document.getElementById("timerDisplay").classList.remove("running")
 
     let mins = toMins(elapsed)
     document.getElementById("logDuration").value = mins
     document.getElementById("sessionSummary").textContent = sname + " . " + fmt(elapsed)
 
     showPhase("logPhase")
-    initFocusBtns()
 }
 
 function checkCrash() {
@@ -128,7 +131,6 @@ function checkCrash() {
         document.getElementById("logDuration").value = mins
         document.getElementById("sessionSummary").textContent = d.sname + " . recovered"
         showPhase("logPhase")
-        initFocusBtns()
     } else {
          localStorage.removeItem("arc_timer")
     }
@@ -139,7 +141,7 @@ function initFocusBtns() {
     btns.forEach(function(btn) {
         btn.addEventListener("click", function() {
             btns.forEach(function(b) { b.classList.remove("selected") })
-            btns.classList.add("selected")
+            btn.classList.add("selected")
             document.getElementById("logFocusRating").value = btn.dataset.value
         })
     })
@@ -148,7 +150,8 @@ function initFocusBtns() {
 async function saveSession() {
     let dur = document.getElementById("logDuration").value
     let fr = document.getElementById("logFocusRating").value
-    let loc = document.getElementById("logNotes").value
+    let notes = document.getElementById("logNotes").value
+    let loc = document.getElementById("logLocation").value
     let dist = document.getElementById("logDistractions").value
 
     if (!fr) {
@@ -161,15 +164,15 @@ async function saveSession() {
     btn.textContent = "saving"
 
     try {
-        let res = await fetch("/sessions", {
+        let res = await fetch(API + "/sessions", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 subject_id: sid,
                 duration: parseInt(dur),
                 focus_rating: parseInt(fr),
-                notes: note,
-                location: Loc,
+                notes: notes,
+                location: loc,
                 distractions: dist
             })
         })
@@ -194,11 +197,12 @@ function discard() {
 }
 
 document.addEventListener("DOMContentLoaded", function(){
+    initFocusBtns()
     checkCrash()
     loadSubjects()
     document.getElementById("startBtn").addEventListener("click", startTimer)
     document.getElementById("pauseBtn").addEventListener("click", pauseTimer)
     document.getElementById("stopBtn").addEventListener("click", stopTimer)
-    document.getElementById("saveSessionbtn").addEventListener("click", saveSession)
+    document.getElementById("saveSessionBtn").addEventListener("click", saveSession)
     document.getElementById("discardBtn").addEventListener("click", discard)
 })

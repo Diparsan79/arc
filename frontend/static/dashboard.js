@@ -86,7 +86,7 @@ async function loadWeekChart() {
 async function loadRecent() {
     try {
         let res = await fetch(API + "/sessions")
-        let sessions = await res.join()
+        let sessions = await res.json()
         let container = document.getElementById("recentSessions")
 
         if (sessions.length ==0) {
@@ -105,17 +105,17 @@ async function loadRecent() {
             let dur = hrs > 0 ? hrs + "h " + mins + "m" : mins + "m"
 
             let d = new Date(s.created_at)
-            let DateStr = d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric"})
+            let dateStr = d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric"})
 
             let row = document.createElement("div")
             row.className = "session-row"
             row.innerHTML =
                 '<div class="session-dot" style="background:' + (s.subject.color || "#cc0000") + '"></div>' + 
                 '<div class="session-info">' +
-                    'div class="session-subject">' + s.subject.name + '</div>' + 
-                    'div class="session-meta">' + dateStr + ' . ' + dur + '</div>' +
-                'div' +
-                'div class="session-focus">focus ' + s.focus_rating + '/5</div>'
+                    '<div class="session-subject">' + s.subject.name + '</div>' + 
+                    '<div class="session-meta">' + dateStr + ' . ' + dur + '</div>' +
+                '</div>' +
+                '<div class="session-focus">focus ' + s.focus_rating + '/5</div>'
             container.appendChild(row)
         }
 

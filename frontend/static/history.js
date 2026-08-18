@@ -78,11 +78,12 @@ function renderSessions(sessions) {
                 '</div>' + 
                 '<div class="history-detail">' +
                     fmtDate(s.created_at) + '<br>' +
-                    fmtTime(s.duration) + ' . ' + s.location + '<br>'
+                    fmtTime(s.duration) + ' . ' + s.location + '<br>' +
                     distHtml + 
                 '</div>' + 
-                '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.5rem">' +
-                    focusDots(s.focus_rating) +
+            '</div>' + 
+            '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.5rem">' +
+                focusDots(s.focus_rating) +
                     '<button class="btn-delete" onclick="deleteSession(' + s.id + ')">delete</button>' + 
                 '</div>'
         container.appendChild(row)
@@ -110,8 +111,8 @@ async function loadSubjectFilter() {
 async function loadSessions(params) {
     try {
         let url = API + "/sessions?" +
-            "subject_id" + params.subject_id +
-            "&date_from" + params.date_from +
+            "subject_id=" + params.subject_id +
+            "&date_from=" + params.date_from +
             "&date_to=" + params.date_to 
         
             let res = await fetch(url)

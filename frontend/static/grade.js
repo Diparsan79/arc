@@ -254,7 +254,7 @@ async function addGrade() {
             loadGrades()
             loadCorrelation()
         } else {
-            let d = await res.join()
+            let d = await res.json()
             setStatus("gradeStatus", "network error", "error")
         }
     } catch(e) {
