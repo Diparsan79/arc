@@ -150,8 +150,4 @@ def delete_exam(exam_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="exam not found")
     return {"message": "deleted"}
 
-@app.get("/health")
-def health_check():
-    return {"status": "healthy", "version": "1.0"}
-
 app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
