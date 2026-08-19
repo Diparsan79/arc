@@ -138,11 +138,30 @@ function stopTimer() {
     showPhase("logPhase")
 }
 
-function checkCrash() {
+async function checkCrash() {
     let saved = localStorage.getItem("arc_timer")
-    if (!saved) return
+    let d = saved ? JSON.parse(saved) : null
 
-    let d = JSON.parse(saved)
+    try {
+        let res = await fetch(API + "/timer/active")
+        if (res.ok) {
+            let active = await res.json()
+            if (active && active.start_time_ms) {
+                let subRes = await fetch(API + "/subjects")
+                let subjects = await subRes.json()
+                let subj = subjects.find(s => s.id === active.subject_id)
+                if (subj) {
+                    d = { sid: active.subject_id, sname: subj.name, stime: active.start_time_ms }
+                    localStorage.setItem("arc_timer", JSON.stringify(d))
+                }
+            }
+        }
+    } catch(e) {
+        console.log("Failed to sync with backend", e)
+    }
+
+    if (!d) return
+
     let lost = Date.now() - d.stime
     let mins = toMins(lost)
 
@@ -202,7 +221,16 @@ async function saveSession() {
         })
 
         if (res.ok) {
-            window.location.href = "/index.html"
+            let toast = document.getElementById("toast")
+            if (toast) {
+                toast.classList.remove("hidden")
+                toast.classList.add("show")
+                setTimeout(() => {
+                    window.location.href = "/index.html"
+                }, 1500)
+            } else {
+                window.location.href = "/index.html"
+            }
         } else {
             let data = await res.json()
             setStatus("logStatus", "error: " + data.detail, "error")

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Text
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Text, BigInteger
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from .database import Base
@@ -59,9 +59,9 @@ class ActiveTimer(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     subject_id = Column(Integer, ForeignKey("subjects.id", ondelete="CASCADE"), nullable=False)
-    start_time_ms = Column(Integer, nullable=False)
-    total_paused_ms = Column(Integer, default=0)
-    last_pause_time_ms = Column(Integer, nullable=True)
+    start_time_ms = Column(BigInteger, nullable=False)
+    total_paused_ms = Column(BigInteger, default=0)
+    last_pause_time_ms = Column(BigInteger, nullable=True)
     is_paused = Column(Integer, default=0)
 
     subject = relationship("Subject")

@@ -98,6 +98,7 @@
 
                 <div class="form-group">
                     <label>how was your focus?</label>
+                    <span class="field-hint" style="display:block;margin-bottom:0.5rem;color:#888;">1 = totally distracted, 5 = deep flow state</span>
                     <div class="focus-selector" id="logFocusSelector">
                         <button class="focus-btn" data-value="1">1</button>
                         <button class="focus-btn" data-value="2">2</button>
@@ -110,7 +111,7 @@
 
                 <div class="form-group">
                     <label>what did you cover?</label>
-                    <textarea id="logNotes" placeholder="Chapter 5 — thermodynamics, practice problems..."
+                    <textarea id="logNotes" placeholder="e.g. Chapter 5 — thermodynamics, practiced 10 problems..."
                         rows="3"></textarea>
                 </div>
 
@@ -127,7 +128,7 @@
 
                     <div class="form-group">
                         <label>distractions?</label>
-                        <input type="text" id="logDistractions" placeholder="youtube, phone...">
+                        <input type="text" id="logDistractions" placeholder="e.g. phone, youtube, noisy room...">
                     </div>
                 </div>
 
@@ -141,6 +142,11 @@
         </div>
 
     </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden">
+        session saved successfully!
+    </div>
 
     <script src="/static/timer.js?v=2"></script>
 </body>
