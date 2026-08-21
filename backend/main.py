@@ -152,6 +152,6 @@ def delete_exam(exam_id: int, db: Session = Depends(get_db)):
 
 @app.get("/health")
 def health_check():
-    return {"status": "healthy", "version": "1.0"}
+    return {"status": "healthy"}
 
 app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
