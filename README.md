@@ -73,3 +73,4 @@ here's how you can run this on your machine
 ## ai disclosure
 - I used ai as a programming mentor helping in different aspects of the site's development
 - ai was used to help me structure some of the frontend components and some database structuring
+- i understand the frontend component/css might not be as creative by me but i didn't have much time as i had my finals coming up then and i seriously had to lock in and get decent marks. I understand if some of my hours are cut down because of the ai usage but i assure you i've been learning css styling myself very proprerly since then and this is my attempt to make my 30hours of hardwork fruitful.
