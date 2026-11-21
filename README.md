@@ -19,25 +19,25 @@ here are some of the coolest parts of the project:
 
 ### dashboard
 highlights your daily goal, daily logged hours, overall weekly goals, and recent sessions.
-![dashboard](images/dashboard.png)
+![dashboard](images/dashboard1.png)
 
 ### session timer
 start logging your study hours from here with the timer.
-![log](images/start_session.png)
-![timer](images/timer.png)
+![log](images/timer1.png)
+![timer](images/timer2.png)
 
 ### logging sessions
 when you finish, log your focus level and distractions.
-![log session](images/log_session.png)
+![log session](images/log_session1.png)
 
 ### insights & history
 view detailed patterns from your sessions to see when you focus best as well as some other metrics.
-![insights](images/insights.png)
-![history](images/history.png)
+![insights](images/insight1.png)
+![history](images/history1.png)
 
 ### grades & correlation
 track your exam grades and see how your study hours correlate to your scores.
-![grades](images/grades.png)
+![grades](images/grades1.png)
 
 ##  local setup
 
